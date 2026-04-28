@@ -1,7 +1,7 @@
 package bean;
 
 /**
- * 学生情報を表す Bean クラス
+ * 学生情報を表す Bean クラスa
  */
 public class Student {
 

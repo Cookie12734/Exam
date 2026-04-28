@@ -1,111 +1,52 @@
 package scoremanager.main;
-
-import java.io.IOException;
+//a
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import bean.Student;
 import bean.Teacher;
 import dao.ClassNumDao;
-import dao.StudentDao;
+import tool.Action;
 
-@WebServlet("/scoremanager/main/StudentCreate.action")
-public class StudentCreateAction extends HttpServlet {
+public class StudentCreateAction extends Action {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
+	@Override
+	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-        try {
-            // ログイン済みの教員の学校情報を元にクラス一覧を取得
-            if (teacher != null && teacher.getSchool() != null) {
-                ClassNumDao cNumDao = new ClassNumDao();
-                List<String> classNumList = cNumDao.filter(teacher.getSchool());
-                req.setAttribute("class_num_set", classNumList);
-            }
+		HttpSession session = req.getSession(); // セッション
+		Teacher teacher = (Teacher)session.getAttribute("user");
 
-            // 入学年度の候補を生成（例: 現在の年の前後10年）
-            int currentYear = LocalDate.now().getYear();
-            List<Integer> entYearSet = new ArrayList<>();
-            for (int i = currentYear - 10; i <= currentYear + 1; i++) {
-                entYearSet.add(i);
-            }
-            req.setAttribute("ent_year_set", entYearSet);
+		// ローカル変数の指定 1
+		ClassNumDao classNumDao = new ClassNumDao(); // クラス番号Daoを初期化
+		LocalDate todaysDate = LocalDate.now(); // LocalDateインスタンスを取得
+		int year = todaysDate.getYear(); // 現在の年を取得
 
-        } catch (Exception e) {
-            req.setAttribute("errorMessage", "データの取得に失敗しました。");
-        }
+		// リクエストパラメーターの取得 2
+		// なし
 
-        // 新規登録画面（JSP）へフォワード
-        req.getRequestDispatcher("student_create.jsp").forward(req, res);
-    }
+		// DBからデータ取得 3
+		// ログインユーザーの学校コードをもとにクラス番号の一覧を取得
+		List<String> list = classNumDao.filter(teacher.getSchool());
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        // フォームから送信されたパラメータの取得
-        String entYearStr = req.getParameter("ent_year");
-        String studentNo = req.getParameter("student_no");
-        String studentName = req.getParameter("student_name");
-        String classNum = req.getParameter("class_num");
+		// ビジネスロジック 4
+		// リストを初期化
+		List<Integer> entYearSet = new ArrayList<>();
+		// 10年前から10年後まで年をリストに追加
+		for (int i = year - 10; i < year + 11; i++) {
+			entYearSet.add(i);
+		}
 
-        // バリデーションチェック (簡易チェック)
-        if (entYearStr == null || entYearStr.isEmpty() ||
-            studentNo == null || studentNo.isEmpty() ||
-            studentName == null || studentName.isEmpty() ||
-            classNum == null || classNum.isEmpty()) {
-            
-            req.setAttribute("errorMessage", "すべての項目を入力してください。");
-            doGet(req, res); // リストを再取得するためにdoGetを呼び出す
-            return;
-        }
+		// レスポンス値をセット 6
+		// リクエストにデータをセット
+		req.setAttribute("class_num_set", list);
+		req.setAttribute("ent_year_set", entYearSet);
 
-        try {
-            int entYear = Integer.parseInt(entYearStr);
+		// JSPへフォワード 7
+		req.getRequestDispatcher("../student_create.jsp").forward(req, res);
+	}
 
-            // Studentオブジェクトの生成と値のセット
-            Student student = new Student();
-            student.setEntYear(entYear);
-            student.setStudentNo(studentNo);
-            student.setStudentName(studentName);
-            student.setClassNum(classNum);
-            student.setAttend(true); // デフォルトで在学中に設定
-
-            // セッションから学校情報を取得してセット（必要に応じて実装）
-            HttpSession session = req.getSession();
-            Teacher teacher = (Teacher) session.getAttribute("user");
-            if (teacher != null) {
-                student.setSchool(teacher.getSchool());
-            }
-
-            // データベースへの登録処理
-            StudentDao dao = new StudentDao();
-            boolean success = dao.save(student);
-
-            if (success) {
-                // 登録完了後、学生一覧へリダイレクト
-                res.sendRedirect("StudentList.action");
-            } else {
-                req.setAttribute("errorMessage", "登録に失敗しました。（学番が重複している可能性があります）");
-                doGet(req, res);
-            }
-
-        } catch (NumberFormatException e) {
-            // 入学年度が数値でない場合のエラーハンドリング
-            req.setAttribute("errorMessage", "入学年度には数値を入力してください。");
-            doGet(req, res);
-        } catch (Exception e) {
-            // その他の例外ハンドリング
-            req.setAttribute("errorMessage", "システムエラーが発生しました。");
-            doGet(req, res);
-        }
-    }
 }

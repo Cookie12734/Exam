@@ -1,5 +1,5 @@
 package bean;
-
+//a
 import java.io.Serializable;
 
 public class ClassNum implements Serializable {

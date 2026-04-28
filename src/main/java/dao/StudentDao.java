@@ -1,5 +1,5 @@
 package dao;
-
+//a
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ public class StudentDao extends Dao {
 
 	private String baseSql = "select * from student where school_cd = ?";
 
-	public Student get(String StudentNo) throws Exception {
+	public Student get(String no) throws Exception {
 
 		// 学生インスタンスを初期化
 		Student student = new Student();
@@ -25,9 +25,9 @@ public class StudentDao extends Dao {
 
 		try {
 			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("select * from student where no = ?");
+			statement = connection.prepareStatement("select * from student where student_no = ?");
 			// プリペアードステートメントに学生番号をバインド
-			statement.setString(1, StudentNo);
+			statement.setString(1, no);
 			// プリペアードステートメントを実行
 			ResultSet resultSet = statement.executeQuery();
 
