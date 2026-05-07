@@ -3,7 +3,10 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
+import bean.School;
 import bean.Subject;
 
 public class SubjectDAO extends Dao {
@@ -49,14 +52,10 @@ public class SubjectDAO extends Dao {
         }
         return count > 0;
     }
-}
-import java.util.ArrayList;
-import java.util.List;
 
-import bean.School;
-import bean.Subject;
 
-public class SubjectDAO extends Dao {
+
+
 
     /**
      * 指定された学校の科目一覧を取得します。
