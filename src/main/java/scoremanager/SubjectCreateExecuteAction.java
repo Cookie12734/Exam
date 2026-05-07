@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
-public class SubjectCreateExecuteAction extends Action { 
+public class SubjectCreateExecuteAction extends Action {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

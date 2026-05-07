@@ -11,7 +11,7 @@ import bean.Teacher;
 import dao.TeacherDao;
 import tool.Action;
 
- 
+
 public class LoginExecuteAction extends Action {
 
 	@Override
@@ -57,7 +57,7 @@ public class LoginExecuteAction extends Action {
 			req.setAttribute("id", id);
 
 			//フォワード
-			url = "login.jsp"; 
+			url = "login.jsp";
 			req.getRequestDispatcher(url).forward(req, res);
 		}
 
