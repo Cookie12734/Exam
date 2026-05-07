@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%-- ヘッダーなどの共通部品があればここでインポート --%>
+<%-- ヘッダーなどの共通部品があればここでインポートa --%>
 <c:import url="../common/base.jsp">
     <c:param name="title">得点管理システム</c:param>
     <c:param name="content">
