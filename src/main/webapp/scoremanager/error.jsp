@@ -17,5 +17,5 @@
     </div>
 
     <a href="index.jsp">トップページへ戻る</a>
-</body>
+</body> 
 </html>
