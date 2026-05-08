@@ -1,36 +1,35 @@
 package scoremanager.main;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import bean.Subject;
+import bean.Teacher; // 追加
+import dao.SubjectDAO; // 追加
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import bean.Subject;
+import jakarta.servlet.http.HttpSession; // 追加
 import tool.Action;
 
 public class SubjectListAction extends Action {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // TODO: 実際にはSubjectDaoを使用してデータベースから科目一覧を取得する処理を記述します
-        List<Subject> subjectList = new ArrayList<>();
-        
-        // ダミーデータの追加（動作確認用）
-        Subject subject1 = new Subject();
-        subject1.setSubjectCd("A01");
-        subject1.setSubjectName("国語");
-        subjectList.add(subject1);
-        
-        Subject subject2 = new Subject();
-        subject2.setSubjectCd("A02");
-        subject2.setSubjectName("数学");
-        subjectList.add(subject2);
+        // 1. セッションからログイン中の教師情報を取得
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // リクエストスコープに科目リストをセット
+        // 2. 教師の学校コードを取得
+        String schoolCd = teacher.getSchool().getSchoolCd();
+
+        // 3. SubjectDAOを使ってデータベースから科目一覧を取得
+        SubjectDAO sDao = new SubjectDAO();
+        List<Subject> subjectList = sDao.filter(schoolCd);
+
+        // 4. リクエストスコープに科目リストをセット
         req.setAttribute("subjectList", subjectList);
 
-        // JSPへフォワード
+        // 5. JSPへフォワード
+        // ファイル名は image_6e6fc3.png のエラーメッセージに合わせています
         req.getRequestDispatcher("/scoremanager/Subjectlist.jsp").forward(req, res);
     }
 }
