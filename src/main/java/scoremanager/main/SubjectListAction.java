@@ -4,7 +4,7 @@ import java.util.List;
 
 import bean.Subject;
 import bean.Teacher; // 追加
-import dao.SubjectDAO; // 追加
+import dao.SubjectDAO; // 追加1
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession; // 追加
