@@ -61,9 +61,9 @@ public class FrontController extends HttpServlet {
 
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			// エラーページへリダイレクト
-			req.getRequestDispatcher("/error.jsp").forward(req, res);
+		    e.printStackTrace();
+		    req.setAttribute("javax.servlet.error.exception", e); // ← 追加
+		    req.getRequestDispatcher("/scoremanager/error.jsp").forward(req, res);
 		}
 	}
 
