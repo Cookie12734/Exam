@@ -13,9 +13,11 @@
     
     <%-- 開発中のみ、エラーの内容を表示させるとデバッグが楽になります --%>
     <div style="color: red; border: 1px solid red; padding: 10px;">
-        エラーメッセージ: <%= exception.getMessage() %>
+        <div style="color: red; border: 1px solid red; padding: 10px;">
+    		エラーメッセージ: <%= request.getAttribute("javax.servlet.error.exception") %>
+		</div>
     </div>
 
-    <a href="index.jsp">トップページへ戻る</a>
+    <a href="menu.jsp">トップページへ戻る</a>
 </body>
 </html>
