@@ -1,11 +1,12 @@
 package scoremanager.main;
 
-import bean.Subject;
-import bean.Teacher;
-import dao.SubjectDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
+import bean.Subject;
+import bean.Teacher;
+import dao.SubjectDAO;
 import tool.Action;
 
 public class SubjectCreateExecuteAction extends Action {
@@ -35,6 +36,6 @@ public class SubjectCreateExecuteAction extends Action {
 		sDao.save(subject);
 
 		// 4. 次の画面へ（完了画面など）
-		req.getRequestDispatcher("subject_create_done.jsp").forward(req, res);
+		req.getRequestDispatcher("subject_list.jsp").forward(req, res);
 	}
 }
