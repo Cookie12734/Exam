@@ -67,4 +67,27 @@ public class SubjectDAO extends Dao {
         }
         return count > 0;
     }
+    
+    /**
+     * 科目を削除する
+     */
+    public boolean delete(Subject subject) throws Exception {
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        int count = 0;
+
+        try {
+            String sql = "DELETE FROM SUBJECT WHERE SUBJECT_CD = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, subject.getSubjectCd());
+
+            count = statement.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return count > 0;
+    }
 }

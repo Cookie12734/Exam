@@ -16,6 +16,8 @@
                     <tr>
                         <th>科目コード</th>
                         <th>科目名</th>
+                        <th>更新</th>
+                        <th>削除</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,12 +27,18 @@
                                 <tr>
                                     <td><c:out value="${subject.subjectCd}" /></td>
                                     <td><c:out value="${subject.subjectName}" /></td>
+                                    <td>
+                                        <a href="main/SubjectUpdate.action?cd=${subject.subjectCd}">更新</a>
+                                    </td>
+                                    <td>
+                                        <a href="SubjectDelete.action?cd=${subject.subjectCd}">削除</a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
                             <tr>
-                                <td colspan="2">科目が登録されていません。</td>
+                                <td colspan="4">科目が登録されていません。</td>
                             </tr>
                         </c:otherwise>
                     </c:choose>
