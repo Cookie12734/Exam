@@ -36,6 +36,7 @@ public class SubjectCreateExecuteAction extends Action {
             sDao.save(subject);
             // 4. 保存成功後、科目一覧へ飛ばす（パスを正確に指定）
             // ※ファイルの場所に合わせて /scoremanager/subject_list.jsp などに変更してください
+            res.sendRedirect(req.getContextPath() + "/scoremanager/subject_create_done.jsp");
         } catch (Exception e) {
             e.printStackTrace();
             // 本来はここでエラーページへ飛ばすが、error.jspがないならひとまず現状維持

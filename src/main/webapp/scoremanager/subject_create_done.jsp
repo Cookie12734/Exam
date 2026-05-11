@@ -9,7 +9,7 @@
                 <p>登録が完了しました。</p>
             </div>
             <div class="mt-3">
-                <a href="main.SubjectList.action">戻る</a>
+                <a href="main/SubjectList.action">戻る</a>
             </div>
         </section>
     </c:param>
