@@ -15,31 +15,53 @@ public class SubjectCreateExecuteAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher)session.getAttribute("user");
 
-        // 1. JSPの name="cd" と一致させる
         String subjectCd = req.getParameter("cd"); 
         String subjectName = req.getParameter("name");
 
-        // 2. Beanの作成
+        SubjectDAO sDao = new SubjectDAO();
+
+        // 1. 科目コードの文字数チェック（サーバー側でも念のため3文字確認）
+        if (subjectCd == null || subjectCd.length() != 3) {
+            req.setAttribute("error", "科目コードは3文字で入力してください");
+            req.setAttribute("cd", subjectCd);
+            req.setAttribute("name", subjectName);
+            // scoremanager直下を探すよう絶対パスに変更
+            req.getRequestDispatcher("/scoremanager/subject_create.jsp").forward(req, res);
+            return;
+        }
+
+        // 2. 科目コードの重複チェック
+        // DAOのgetメソッドに合わせて、学校コード（文字列）を渡すよう修正
+        Subject existingSubject = null;
+        if (teacher != null && teacher.getSchool() != null) {
+            existingSubject = sDao.get(subjectCd, teacher.getSchool().getSchoolCd());
+        }
+
+        if (existingSubject != null) {
+            req.setAttribute("error", "科目コードが重複しています");
+            req.setAttribute("cd", subjectCd);
+            req.setAttribute("name", subjectName);
+            // scoremanager直下を探す
+            req.getRequestDispatcher("/scoremanager/subject_create.jsp").forward(req, res);
+            return;
+        }
+
+        // 3. Beanの作成とセット
         Subject subject = new Subject();
         subject.setSubjectCd(subjectCd);
         subject.setSubjectName(subjectName);
         
-        // ログインユーザーの学校情報をセット
         if (teacher != null && teacher.getSchool() != null) {
             subject.setSchoolCd(teacher.getSchool().getSchoolCd());
         }
 
-        // 3. DAOを使って保存
-        SubjectDAO sDao = new SubjectDAO();
-        
+        // 4. データ保存
         try {
             sDao.save(subject);
-            // 4. 保存成功後、科目一覧へ飛ばす（パスを正確に指定）
-            // ※ファイルの場所に合わせて /scoremanager/subject_list.jsp などに変更してください
+            // リダイレクトパスもscoremanager直下になるよう修正
             res.sendRedirect(req.getContextPath() + "/scoremanager/subject_create_done.jsp");
         } catch (Exception e) {
             e.printStackTrace();
-            // 本来はここでエラーページへ飛ばすが、error.jspがないならひとまず現状維持
             throw e; 
         }
     }

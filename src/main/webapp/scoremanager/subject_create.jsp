@@ -7,7 +7,7 @@
         <section class="me-4">
             <h2 class="h3 mb-3 fw-norma">科目登録</h2>
             
-            <%-- エラーメッセージの表示（仕様書の「重複」や「未入力」の警告用） --%>
+            <%-- エラーメッセージの表示（サーバー側での重複チェック結果などを表示します） --%>
             <c:if test="${not empty error}">
                 <div class="alert alert-danger text-danger">
                     ${error}
@@ -18,18 +18,18 @@
                 <div class="mb-3">
                     <label class="form-label" for="subject-cd-input">科目コード</label>
                     <%-- 
-                        value="${cd}" とすることで、エラーで戻ってきた時に入力内容を保持します。
-                        required をつけることで、ブラウザ標準の「未入力チェック」が働きます。
+                        minlength="3" を追加し、3文字未満の入力をブラウザで防ぎます。
+                        重複エラーはサーバー側の処理で判定して ${error} として返してください。
                     --%>
                     <input class="form-control" type="text" id="subject-cd-input" name="cd" 
                            placeholder="科目コードを入力してください" value="${cd}" 
-                           maxlength="3" required>
+                           maxlength="3" minlength="3" required>
                 </div>
                 
                 <div class="mb-3">
                     <label class="form-label" for="subject-name-input">科目名</label>
                     <input class="form-control" type="text" id="subject-name-input" name="name" 
-                           placeholder="科目名を法入力してください" value="${name}" 
+                           placeholder="科目名を入力してください" value="${name}" 
                            maxlength="20" required>
                 </div>
 
