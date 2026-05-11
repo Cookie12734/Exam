@@ -28,7 +28,7 @@
                                     <td><c:out value="${subject.subjectCd}" /></td>
                                     <td><c:out value="${subject.subjectName}" /></td>
                                     <td>
-                                        <a href="main/SubjectUpdate.action?cd=${subject.subjectCd}">更新</a>
+                                        <a href="SubjectUpdate.action?cd=${subject.subjectCd}">変更</a>
                                     </td>
                                     <td>
                                         <a href="SubjectDelete.action?cd=${subject.subjectCd}">削除</a>

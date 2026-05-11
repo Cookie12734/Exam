@@ -42,6 +42,35 @@ public class SubjectDAO extends Dao {
         }
         return list;
     }
+    
+    public Subject get(String subjectCd, String schoolCd) throws Exception {
+        Subject subject = null;
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        ResultSet rSet = null;
+ 
+        try {
+            // 科目コードと学校コードの両方で一致を確認
+            statement = connection.prepareStatement("SELECT * FROM SUBJECT WHERE SUBJECT_CD = ? AND SCHOOL_CD = ?");
+            statement.setString(1, subjectCd);
+            statement.setString(2, schoolCd);
+            rSet = statement.executeQuery();
+ 
+            if (rSet.next()) {
+                subject = new Subject();
+                subject.setSubjectCd(rSet.getString("SUBJECT_CD"));
+                subject.setSubjectName(rSet.getString("SUBJECT_NAME"));
+                subject.setSchoolCd(rSet.getString("SCHOOL_CD"));
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (rSet != null) rSet.close();
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return subject;
+    }
 
     /**
      * 科目を保存する
@@ -81,6 +110,30 @@ public class SubjectDAO extends Dao {
             statement = connection.prepareStatement(sql);
             statement.setString(1, subject.getSubjectCd());
 
+            count = statement.executeUpdate();
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return count > 0;
+    }
+    
+    public boolean update(Subject subject, String oldSubjectCd) throws Exception {
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        int count = 0;
+ 
+        try {
+            // SETで新しいCDとNAMEを指定し、WHEREで元のCDを指定する
+            String sql = "UPDATE SUBJECT SET SUBJECT_CD = ?, SUBJECT_NAME = ? WHERE SUBJECT_CD = ? AND SCHOOL_CD = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, subject.getSubjectCd());   // 新しいコード
+            statement.setString(2, subject.getSubjectName()); // 新しい名前
+            statement.setString(3, oldSubjectCd);            // 更新前の古いコード
+            statement.setString(4, subject.getSchoolCd());
+ 
             count = statement.executeUpdate();
         } catch (Exception e) {
             throw e;
