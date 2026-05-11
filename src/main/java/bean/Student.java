@@ -72,4 +72,13 @@ public class Student {
     public void setSchool(School school) {
         this.school = school;
     }
+
+    public String getNo() {
+    	return studentNo;
+    }
+    
+	public void setNo(String no) {
+		this.studentNo = no;
+		
+	}
 }

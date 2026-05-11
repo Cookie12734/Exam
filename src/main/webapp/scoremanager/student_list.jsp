@@ -65,6 +65,7 @@
 							<th class="text-center">在学中</th>
 							<th></th>
 							<th></th>
+							<th></th>
 						</tr>
 						<c:forEach var="student" items="${students }">
 							<tr>
@@ -84,6 +85,7 @@
 									</c:choose>
 								</td>
 								<td><a href="StudentUpdate.action?no=${student.studentNo }">変更</a></td>
+								<td><a href="StudentDelete.action?no=${student.studentNo }">削除</a></td>
 							</tr>
 						</c:forEach>
 					</table>
