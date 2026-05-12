@@ -7,7 +7,7 @@
 
     <c:param name="content">
         <section class="me-4">
-            <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
+            <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績登録</h2>
 
             <form action="ScoreCreateExecute.action" method="get" class="mb-4 px-4">
                 <div class="row g-3 align-items-end">
