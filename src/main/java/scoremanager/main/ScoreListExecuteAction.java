@@ -33,12 +33,23 @@ public class ScoreListExecuteAction extends Action {
         }
         ClassNumDao cDao = new ClassNumDao();
         List<String> classNumSet = cDao.filter(school);
+        
         SubjectDAO sDao = new SubjectDAO();
         List<Subject> subjectList = sDao.filter(school.getSchoolCd());
 
+        // 科目の重複を排除
+        List<Subject> uniqueSubjectList = new ArrayList<>();
+        List<String> existingSubjectCds = new ArrayList<>();
+        for (Subject subject : subjectList) {
+            if (!existingSubjectCds.contains(subject.getSubjectCd())) {
+                uniqueSubjectList.add(subject);
+                existingSubjectCds.add(subject.getSubjectCd());
+            }
+        }
+
         request.setAttribute("entYearSet", entYearSet);
         request.setAttribute("classNumSet", classNumSet);
-        request.setAttribute("subjectList", subjectList);
+        request.setAttribute("subjectList", uniqueSubjectList);
 
         // 2. 検索条件を取得
         String entYearStr = request.getParameter("entYear");

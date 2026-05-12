@@ -36,10 +36,20 @@ public class ScoreListAction extends Action {
         SubjectDAO sDao = new SubjectDAO();
         List<Subject> subjectList = sDao.filter(school.getSchoolCd());
 
+        // 科目の重複を排除
+        List<Subject> uniqueSubjectList = new ArrayList<>();
+        List<String> existingSubjectCds = new ArrayList<>();
+        for (Subject subject : subjectList) {
+            if (!existingSubjectCds.contains(subject.getSubjectCd())) {
+                uniqueSubjectList.add(subject);
+                existingSubjectCds.add(subject.getSubjectCd());
+            }
+        }
+
         // リクエストスコープにセット
         request.setAttribute("entYearSet", entYearSet);
         request.setAttribute("classNumSet", classNumSet);
-        request.setAttribute("subjectList", subjectList);
+        request.setAttribute("subjectList", uniqueSubjectList);
 
         // JSPへフォワード
         request.getRequestDispatcher("/scoremanager/score_list.jsp").forward(request, response);

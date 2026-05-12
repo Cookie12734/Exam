@@ -71,14 +71,22 @@
                                     <th>学生番号</th>
                                     <th>氏名</th>
                                     <th>点数</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <c:forEach var="test" items="${testList}">
                                     <tr>
-                                        <td><c:out value="${test.student.no}" /></td>
-                                        <td><c:out value="${test.student.name}" /></td>
+                                        <td><c:out value="${test.studentNo}" /></td>
+                                        <td><c:out value="${test.studentName}" /></td>
                                         <td><c:out value="${test.point}" /></td>
+                                        <td>
+                                        	<a href="ScoreUpdate.action?cd=${test.studentNo}">変更</a>
+                                    	</td>
+                                   		<td>
+                                        	<a href="ScoreDelete.action?cd=${test.studentNo}">削除</a>
+                                    	</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
