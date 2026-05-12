@@ -82,7 +82,7 @@
                                         <td><c:out value="${test.studentName}" /></td>
                                         <td><c:out value="${test.point}" /></td>
                                         <td>
-                                        	<a href="ScoreUpdate.action?cd=${test.studentNo}">変更</a>
+                                        	<a href="ScoreUpdate.action?entYear=${param.entYear}&classNum=${param.classNum}&subjectCd=${param.subjectCd}&no=${param.num}">変更</a>
                                     	</td>
                                    		<td>
                                         	<a href="ScoreDelete.action?cd=${test.studentNo}">削除</a>
