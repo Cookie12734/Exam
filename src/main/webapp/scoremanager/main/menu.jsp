@@ -21,13 +21,13 @@
 					style="height: 10rem; background-color: #bdb;">
 					<div>
 						<div class="">
-							<a href="ScoreList.action">成績管理</a>
+							成績管理
 						</div>
 						<div class="">
 							<a href="ScoreCreate.action">成績登録</a>
 						</div>
 						<div class="">
-							<a href="TestList.action">成績参照</a>
+							<a href="ScoreList.action">成績参照</a>
 						</div>
 					</div>
 				</div>

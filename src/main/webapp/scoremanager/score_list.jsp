@@ -56,6 +56,13 @@
             </form>
 
             <div class="px-4">
+                <%-- エラーメッセージの表示 --%>
+                <c:if test="${not empty errors}">
+                    <div class="alert alert-danger" role="alert">
+                        ${errors}
+                    </div>
+                </c:if>
+
                 <c:choose>
                     <c:when test="${not empty testList}">
                         <table class="table table-hover table-bordered">
@@ -77,7 +84,8 @@
                             </tbody>
                         </table>
                     </c:when>
-                    <c:when test="${empty testList and not empty param.entYear}">
+                    <%-- 検索結果が空、かつエラーメッセージが無い場合のみ表示 --%>
+                    <c:when test="${empty testList and not empty param.entYear and empty errors}">
                         <p>学生情報が存在しませんでした</p>
                     </c:when>
                 </c:choose>

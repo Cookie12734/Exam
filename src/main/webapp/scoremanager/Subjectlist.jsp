@@ -16,8 +16,8 @@
                     <tr>
                         <th>科目コード</th>
                         <th>科目名</th>
-                        <th>更新</th>
-                        <th>削除</th>
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
