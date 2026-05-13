@@ -66,12 +66,12 @@ public class StudentCreateExecuteAction extends Action {
 		// リクエストにクラス番号をセット	
 		req.setAttribute("class_num", class_num);
 
-		// JSPへフォワード 7
-		// エラーがなければ一覧へ、あれば入力画面へ
+		// JSPへフォワード
+		// エラーがなければ完了画面へ、あれば入力画面へ
 		if (errors.isEmpty()) {
-		    res.sendRedirect("StudentList.action"); // 一覧へ
+		    req.getRequestDispatcher("/scoremanager/student_create_done.jsp").forward(req, res);
 		} else {
-			req.getRequestDispatcher("../student_create.jsp").forward(req, res);
+			req.getRequestDispatcher("/scoremanager/student_create.jsp").forward(req, res);
 		}
 	}
 
