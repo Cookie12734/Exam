@@ -3,13 +3,13 @@ package bean;
 import java.io.Serializable;
 
 public class Score implements Serializable {
-    private String studentNo;   // 学生番号
-    private String studentName; // 学生名（表示用）
-    private String schoolCd;    // 学校コード
-    private String subjectCd;   // 科目コード
-    private int no;             // 回数
-    private int point;          // 点数
-    private String classNum;    // クラス番号
+    private String studentNo;   
+    private String studentName; 
+    private String schoolCd;    
+    private String subjectCd;   
+    private int no;             
+    private int point;          
+    private String classNum;    
 
     public String getStudentNo() { return studentNo; }
     public void setStudentNo(String studentNo) { this.studentNo = studentNo; }

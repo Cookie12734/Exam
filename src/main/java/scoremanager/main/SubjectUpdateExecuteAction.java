@@ -16,7 +16,7 @@ public class SubjectUpdateExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         // 画面からの入力を受け取る
-        String oldSubjectCd = req.getParameter("old_cd"); // 隠しフィールドの元のコード
+        String oldSubjectCd = req.getParameter("old_cd"); 
         String newSubjectCd = req.getParameter("cd");     // 入力された新しいコード
         String subjectName = req.getParameter("name");   // 入力された新しい名前
 
@@ -26,7 +26,7 @@ public class SubjectUpdateExecuteAction extends Action {
         subject.setSchoolCd(teacher.getSchool().getSchoolCd());
 
         SubjectDAO sDao = new SubjectDAO();
-        // DAOのupdateメソッドに「新しい情報のBean」と「古いコード」を渡す
+ 
         sDao.update(subject, oldSubjectCd);
 
         // 更新完了後、完了画面へリダイレクト

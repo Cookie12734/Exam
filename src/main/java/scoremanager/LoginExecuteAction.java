@@ -17,25 +17,20 @@ public class LoginExecuteAction extends Action {
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-		//ローカル変数の宣言 1
+		//ローカル変数の宣言
 		String url = "";
 		String id = "";
 		String password = "";
 		TeacherDao teacherDao = new TeacherDao();
 		Teacher teacher = null;
 
-		//リクエストパラメータ―の取得 2
+		//リクエストパラメータ―の取得
 		id = req.getParameter("id");// 教員ID
 		password = req.getParameter("password");//パスワード
 
-		//DBからデータ取得 3
+		//DBからデータ取得
 		teacher = teacherDao.login(id, password);//教員データ取得
 
-		//ビジネスロジック 4
-		//DBへデータ保存 5
-		//レスポンス値をセット 6
-		//フォワード 7
-		//条件で手順4~7の内容が分岐
 		if (teacher != null) {// 認証成功の場合
 			// セッション情報を取得
 			HttpSession session = req.getSession(true);

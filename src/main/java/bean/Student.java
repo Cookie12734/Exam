@@ -1,29 +1,18 @@
 package bean;
 
-/**
- * 学生情報を表す Bean クラスa
- */
 public class Student {
 
-    /** 学籍番号 */
     private String studentNo;
 
-    /** 氏名 */
     private String studentName;
 
-    /** 入学年度 */
     private int entYear;
 
-    /** クラス番号 */
     private String classNum;
 
-    /** 在籍状況 */
     private boolean isAttend;
 
-    /** 所属学校 */
     private School school;
-
-    // --- getter / setter ---
 
  	public String getStudentNo() {
 		return studentNo;

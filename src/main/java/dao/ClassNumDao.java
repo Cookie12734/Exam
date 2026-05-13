@@ -68,13 +68,6 @@ public class ClassNumDao extends Dao {
 		return classNum;
 	}
 
-	/**
-	 * filterメソッド 学校を指定してクラス番号の一覧を取得する
-	 *
-	 * @param school:School
-	 * @return クラス番号の一覧:List<String>
-	 * @throws Exception
-	 */
 	public List<String> filter(School school) throws Exception {
 		// リストを初期化
 		List<String> list = new ArrayList<>();
@@ -121,12 +114,6 @@ public class ClassNumDao extends Dao {
 		return list;
 	}
 
-	/**
-	 * 登録用のsaveメソッド
-	 * @param classNum
-	 * @return 実行可否
-	 * @throws Exception
-	 */
 	public boolean save(ClassNum classNum) throws Exception {
 
 		// コネクションを確立
@@ -174,13 +161,7 @@ public class ClassNumDao extends Dao {
 		}
 	}
 
-	/**
-	 * 変更用saveメソッド
-	 * @param classNum
-	 * @param newClassNum
-	 * @return 変更可否
-	 * @throws Exception
-	 */
+
 	public boolean save(ClassNum classNum, String newClassNum) throws Exception {
 
 		// コネクションを確立

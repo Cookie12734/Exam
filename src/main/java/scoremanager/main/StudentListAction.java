@@ -42,7 +42,6 @@ public class StudentListAction extends Action {
 		classNum = req.getParameter("f2");
 		isAttendStr = req.getParameter("f3");
 
-		// ビジネスロジック 4
 		if (entYearStr != null) {
 			// 数値に変換
 			entYear = Integer.parseInt(entYearStr);
@@ -80,7 +79,6 @@ public class StudentListAction extends Action {
 			students = studentDao.filter(teacher.getSchool(), isAttend);
 		}
 
-		// レスポンス値をセット 6
 		// リクエストに入学年度をセット
 		req.setAttribute("f1", entYear);
 		// リクエストにクラス番号をセット

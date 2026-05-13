@@ -11,10 +11,6 @@ import bean.School;
 
 public class GradeScoreDao extends Dao {
 
-    /**
-     * 指定された条件に合致する学生と成績の一覧を取得します。
-     * テスト仕様書 No.64（成績入力欄の表示）に対応。
-     */
     public List<GradeScore> filter(School school, int entYear, String classNum, String subjectCd, int num) throws Exception {
         List<GradeScore> list = new ArrayList<>();
         Connection connection = getConnection();
@@ -65,10 +61,6 @@ public class GradeScoreDao extends Dao {
         return list;
     }
 
-    /**
-     * 入力された成績情報をDBに保存します。
-     * テスト仕様書 No.68（DBに保存する）に対応。
-     */
     public boolean save(List<GradeScore> list, School school, String subjectCd, int num) throws Exception {
         Connection connection = getConnection();
         PreparedStatement statement = null;
@@ -97,4 +89,53 @@ public class GradeScoreDao extends Dao {
         // リストの件数分更新されていれば成功
         return count > 0;
     }
+    
+    //学生番号を指定して該当学生の成績一覧を取得する
+    public List<GradeScore> filter(School school, String studentNo) throws Exception {
+        List<GradeScore> list = new ArrayList<>();
+        Connection connection = getConnection();
+        PreparedStatement statement = null;
+        try {
+            // 学生テーブルをベースに、テストテーブルと科目テーブルを結合して対象学生のみ絞り込む
+            String sql = "SELECT s.ENT_YEAR, s.CLASS_NUM, s.STUDENT_NO, s.STUDENT_NAME, sub.SUBJECT_NAME, t.SUBJECT_CD, t.NO, t.POINT " +
+                         "FROM STUDENT s " +
+                         "LEFT JOIN TEST t ON s.STUDENT_NO = t.STUDENT_NO AND s.SCHOOL_CD = t.SCHOOL_CD " +
+                         "LEFT JOIN SUBJECT sub ON t.SUBJECT_CD = sub.SUBJECT_CD AND s.SCHOOL_CD = sub.SCHOOL_CD " +
+                         "WHERE s.STUDENT_NO = ? AND s.SCHOOL_CD = ? " +
+                         "ORDER BY t.SUBJECT_CD ASC, t.NO ASC";
+
+            statement = connection.prepareStatement(sql);
+            statement.setString(1, studentNo);
+            statement.setString(2, school.getSchoolCd());
+
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                GradeScore gs = new GradeScore();
+                gs.setEntYear(rs.getInt("ENT_YEAR"));
+                gs.setClassNum(rs.getString("CLASS_NUM"));
+                gs.setStudentNo(rs.getString("STUDENT_NO"));
+                gs.setStudentName(rs.getString("STUDENT_NAME"));
+                gs.setSubjectName(rs.getString("SUBJECT_NAME"));
+                
+                // 科目コードと回数をセットする
+                gs.setSubjectCd(rs.getString("SUBJECT_CD"));
+                gs.setNo(rs.getInt("NO"));
+                
+                // 点数が未登録(NULL)の場合は -1 などを設定
+                int point = rs.getInt("POINT");
+                if (rs.wasNull()) {
+                    gs.setPoint(-1); 
+                } else {
+                    gs.setPoint(point);
+                }
+                
+                list.add(gs);
+            }
+        } finally {
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
+        }
+        return list;
+    }
+
 }

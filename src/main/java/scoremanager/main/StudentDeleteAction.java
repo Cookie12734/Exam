@@ -15,7 +15,7 @@ public class StudentDeleteAction extends Action {
         
         // DAOを使って該当の学生情報を取得
         StudentDao sDao = new StudentDao();
-        Student student = sDao.get(no); // ※getメソッドが存在する前提
+        Student student = sDao.get(no); 
         
         // JSPにデータを渡してフォワード
         req.setAttribute("student", student);

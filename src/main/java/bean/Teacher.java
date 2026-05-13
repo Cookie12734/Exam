@@ -23,10 +23,6 @@ public class Teacher extends User implements Serializable {
 	 */
 	private School school;
 
-	/**
-	 * ゲッター・セッター
-	 */
-	
 	public String getTeacherId() {
 		return teacherId;
 	}

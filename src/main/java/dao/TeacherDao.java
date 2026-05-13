@@ -8,14 +8,7 @@ import java.sql.SQLException;
 import bean.Teacher;
 
 public class TeacherDao extends Dao {
-	/**
-	 * getメソッド 教員IDを指定して教員インスタンスを1件取得する
-	 *
-	 * @param id:String
-	 *            教員ID
-	 * @return 教員クラスのインスタンス 存在しない場合はnull
-	 * @throws Exception
-	 */
+
 	public Teacher get(String id) throws Exception {
 		// 教員インスタンスを初期化
 		Teacher teacher = new Teacher();
@@ -72,16 +65,6 @@ public class TeacherDao extends Dao {
 		return teacher;
 	}
 
-	/**
-	 * loginメソッド 教員IDとパスワードで認証する
-	 *
-	 * @param id:String
-	 *            教員ID
-	 * @param password:String
-	 *            パスワード
-	 * @return 認証成功:教員クラスのインスタンス, 認証失敗:null
-	 * @throws Exception
-	 */
 	public Teacher login(String id, String password) throws Exception {
 		// 教員クラスのインスタンスを取得
 		Teacher teacher = get(id);

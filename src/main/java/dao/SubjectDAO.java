@@ -10,9 +10,6 @@ import bean.Subject;
 
 public class SubjectDAO extends Dao {
 
-    /**
-     * 科目一覧を取得する（学校コードで絞り込み）
-     */
     public List<Subject> filter(String schoolCd) throws Exception {
         List<Subject> list = new ArrayList<>();
         Connection connection = getConnection();
@@ -97,9 +94,6 @@ public class SubjectDAO extends Dao {
         return count > 0;
     }
     
-    /**
-     * 科目を削除する
-     */
     public boolean delete(Subject subject) throws Exception {
         Connection connection = getConnection();
         PreparedStatement statement = null;

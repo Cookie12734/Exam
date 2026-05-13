@@ -20,7 +20,7 @@ public class SubjectCreateExecuteAction extends Action {
 
         SubjectDAO sDao = new SubjectDAO();
 
-        // 1. 科目コードの文字数チェック（サーバー側でも念のため3文字確認）
+        //  科目コードの文字数チェック
         if (subjectCd == null || subjectCd.length() != 3) {
             req.setAttribute("error", "科目コードは3文字で入力してください");
             req.setAttribute("cd", subjectCd);
@@ -30,8 +30,8 @@ public class SubjectCreateExecuteAction extends Action {
             return;
         }
 
-        // 2. 科目コードの重複チェック
-        // DAOのgetメソッドに合わせて、学校コード（文字列）を渡すよう修正
+        //  科目コードの重複チェック
+
         Subject existingSubject = null;
         if (teacher != null && teacher.getSchool() != null) {
             existingSubject = sDao.get(subjectCd, teacher.getSchool().getSchoolCd());
@@ -55,10 +55,10 @@ public class SubjectCreateExecuteAction extends Action {
             subject.setSchoolCd(teacher.getSchool().getSchoolCd());
         }
 
-        // 4. データ保存
+        //  データ保存
         try {
             sDao.save(subject);
-            // リダイレクトパスもscoremanager直下になるよう修正
+            
             res.sendRedirect(req.getContextPath() + "/scoremanager/subject_create_done.jsp");
         } catch (Exception e) {
             e.printStackTrace();

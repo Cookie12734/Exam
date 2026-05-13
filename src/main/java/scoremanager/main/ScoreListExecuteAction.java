@@ -25,7 +25,7 @@ public class ScoreListExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
         School school = teacher.getSchool();
 
-        // 1. 再表示用にセレクトボックスのデータを取得してセットする
+        // 再表示用にセレクトボックスのデータを取得してセットする
         List<Integer> entYearSet = new ArrayList<>();
         int currentYear = LocalDate.now().getYear();
         for (int i = currentYear - 10; i <= currentYear + 1; i++) {
@@ -37,7 +37,6 @@ public class ScoreListExecuteAction extends Action {
         SubjectDAO sDao = new SubjectDAO();
         List<Subject> subjectList = sDao.filter(school.getSchoolCd());
 
-        // 科目の重複を排除
         List<Subject> uniqueSubjectList = new ArrayList<>();
         List<String> existingSubjectCds = new ArrayList<>();
         for (Subject subject : subjectList) {
@@ -51,24 +50,37 @@ public class ScoreListExecuteAction extends Action {
         request.setAttribute("classNumSet", classNumSet);
         request.setAttribute("subjectList", uniqueSubjectList);
 
-        // 2. 検索条件を取得
-        String entYearStr = request.getParameter("entYear");
-        String classNum = request.getParameter("classNum");
-        String subjectCd = request.getParameter("subjectCd");
-        String numStr = request.getParameter("num");
+        // 検索種別の取得 (sj: 科目情報, st: 学生情報)
+        String f = request.getParameter("f");
+        GradeScoreDao tDao = new GradeScoreDao();
 
-        if (entYearStr != null && classNum != null && subjectCd != null && numStr != null) {
-            
-            int entYear = Integer.parseInt(entYearStr);
-            int no = Integer.parseInt(numStr);
-            
-            // 3. 入学年度、クラス、科目のいずれかが未選択（0）の場合のエラーハンドリング
-            if (entYear == 0 || classNum.equals("0") || subjectCd.equals("0")) {
-                request.setAttribute("errors", "入学年度とクラスと科目を選択してください");
+        if ("sj".equals(f)) {
+            // 科目情報での検索
+            String entYearStr = request.getParameter("entYear");
+            String classNum = request.getParameter("classNum");
+            String subjectCd = request.getParameter("subjectCd");
+            String numStr = request.getParameter("num");
+
+            if (entYearStr != null && classNum != null && subjectCd != null && numStr != null) {
+                int entYear = Integer.parseInt(entYearStr);
+                int no = Integer.parseInt(numStr);
+                
+                if (entYear == 0 || classNum.equals("0") || subjectCd.equals("0") || no == 0) {
+                    request.setAttribute("errors", "入学年度とクラスと科目と回数を選択してください");
+                } else {
+                    List<GradeScore> testList = tDao.filter(school, entYear, classNum, subjectCd, no);
+                    request.setAttribute("testList", testList);
+                }
+            }
+        } else if ("st".equals(f)) {
+            // 学生情報での検索
+            String studentNo = request.getParameter("studentNo");
+
+            if (studentNo == null || studentNo.isEmpty()) {
+                request.setAttribute("errors", "学生番号を入力してください");
             } else {
-                // 条件が満たされている場合のみ検索を実行
-                GradeScoreDao tDao = new GradeScoreDao();
-                List<GradeScore> testList = tDao.filter(school, entYear, classNum, subjectCd, no);
+                // Daoに学生番号での検索メソッド(例: filter)が実装されていることを前提としています
+                List<GradeScore> testList = tDao.filter(school, studentNo);
                 request.setAttribute("testList", testList);
             }
         }

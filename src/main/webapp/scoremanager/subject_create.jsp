@@ -18,8 +18,7 @@
                 <div class="mb-3">
                     <label class="form-label" for="subject-cd-input">科目コード</label>
                     <%-- 
-                        minlength="3" を追加し、3文字未満の入力をブラウザで防ぎます。
-                        重複エラーはサーバー側の処理で判定して ${error} として返してください。
+                        minlength="3" を追加し、3文字未満の入力をブラウザで防ぐ
                     --%>
                     <input class="form-control" type="text" id="subject-cd-input" name="cd" 
                            placeholder="科目コードを入力してください" value="${cd}" 

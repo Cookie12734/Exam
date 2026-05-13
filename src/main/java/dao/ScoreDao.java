@@ -10,9 +10,7 @@ import bean.Score;
 
 public class ScoreDao extends Dao {
 
-    /**
-     * 【一括表示用】入学年度、クラス、科目、回数を指定して成績一覧を取得する
-     */
+	//成績一覧の取得
     public List<Score> filter(String schoolCd, int entYear, String classNum, String subjectCd, int no) throws Exception {
         List<Score> list = new ArrayList<>();
         Connection connection = getConnection();
@@ -58,9 +56,6 @@ public class ScoreDao extends Dao {
         return list;
     }
 
-    /**
-     * 【保存用】成績を保存または更新する
-     */
     public boolean save(Score test) throws Exception {
         Connection connection = getConnection();
         PreparedStatement statement = null;

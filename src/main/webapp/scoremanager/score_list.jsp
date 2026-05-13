@@ -9,7 +9,11 @@
         <section class="me-4">
             <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
             
-            <form action="ScoreListExecute.action" method="get" class="row g-3 my-3 px-4">
+            <%-- 科目情報での検索フォーム --%>
+            <form action="ScoreListExecute.action" method="get" class="row g-3 my-3 px-4 align-items-end">
+                <div class="col-auto pb-1">
+                    <span class="fw-bold me-2">科目情報</span>
+                </div>
                 <div class="col-auto">
                     <label for="entYear" class="form-label">入学年度</label>
                     <select name="entYear" id="entYear" class="form-select">
@@ -50,10 +54,30 @@
                     </select>
                 </div>
 
-                <div class="col-auto align-self-end">
+                <div class="col-auto">
                     <button type="submit" class="btn btn-secondary">検索</button>
+                    <input type="hidden" name="f" value="sj"> <%-- 検索種別判別用 --%>
                 </div>
             </form>
+
+            <hr class="mx-4">
+
+            <%-- 学生情報での検索フォーム --%>
+            <form action="ScoreListExecute.action" method="get" class="row g-3 my-3 px-4 align-items-end">
+                <div class="col-auto pb-1">
+                    <span class="fw-bold me-2">学生情報</span>
+                </div>
+                <div class="col-auto">
+                    <label for="studentNo" class="form-label">学生番号</label>
+                    <input type="text" name="studentNo" id="studentNo" class="form-control" placeholder="学生番号を入力してください" value="${param.studentNo}">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-secondary">検索</button>
+                    <input type="hidden" name="f" value="st"> <%-- 検索種別判別用 --%>
+                </div>
+            </form>
+
+            <hr class="mx-4">
 
             <div class="px-4">
                 <%-- エラーメッセージの表示 --%>
@@ -62,39 +86,106 @@
                         ${errors}
                     </div>
                 </c:if>
+                <c:if test="${not empty errorMsg}">
+                    <div class="alert alert-danger" role="alert">
+                        ${errorMsg}
+                    </div>
+                </c:if>
 
                 <c:choose>
                     <c:when test="${not empty testList}">
+                        <%-- 学生情報検索で結果が1件以上ある場合のみ氏名を表示 --%>
+                        <c:if test="${param.f == 'st' && not empty testList}">
+                            <div class="mb-2 fw-bold">
+                                氏名：${testList[0].studentName} (${testList[0].studentNo})
+                            </div>
+                        </c:if>
+
+                        <%-- 学生検索時は一括更新用のフォームで囲む --%>
+                        <c:if test="${param.f == 'st'}">
+                            <form action="ScoreUpdateExecute.action" method="post">
+                            <input type="hidden" name="studentNo" value="${testList[0].studentNo}">
+                        </c:if>
+
                         <table class="table table-hover table-bordered">
                             <thead>
                                 <tr>
-                                    <th>学生番号</th>
-                                    <th>氏名</th>
-                                    <th>点数</th>
-                                    <th></th>
+                                    <c:choose>
+                                        <%-- 学生情報検索の場合 --%>
+                                        <c:when test="${param.f == 'st'}">
+                                            <th>科目名</th>
+                                            <th>科目コード</th>
+                                            <th>回数</th>
+                                            <th>点数</th>
+                                        </c:when>
+                                        <%-- 科目情報検索の場合 --%>
+                                        <c:otherwise>
+                                            <th>学生番号</th>
+                                            <th>氏名</th>
+                                            <th>点数</th>
+                                            <th></th>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <c:forEach var="test" items="${testList}">
-                                    <tr>
-                                        <td><c:out value="${test.studentNo}" /></td>
-                                        <td><c:out value="${test.studentName}" /></td>
-                                        <td><c:out value="${test.point}" /></td>
-                                        <td>
-                                        	<a href="ScoreUpdate.action?entYear=${param.entYear}&classNum=${param.classNum}&subjectCd=${param.subjectCd}&no=${param.num}">変更</a>
-                                    	</td>
-                                   		<td>
-                                        	<a href="ScoreDelete.action?cd=${test.studentNo}">削除</a>
-                                    	</td>
-                                    </tr>
-                                </c:forEach>
+                              <tbody>
+                                <c:choose>
+                                    <%-- 学生情報検索の場合：全ての科目と回数を基準にループ --%>
+                                    <c:when test="${param.f == 'st'}">
+                                        <c:forEach var="subject" items="${subjectList}">
+                                            <c:forEach var="i" begin="1" end="2">
+                                                <%-- 現在の科目・回数に該当する点数があるか探す --%>
+                                                <c:set var="currentPoint" value="" />
+                                                <c:forEach var="test" items="${testList}">
+                                                    <c:if test="${test.subjectCd == subject.subjectCd && test.no == i}">
+                                                        <c:set var="currentPoint" value="${test.point}" />
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <tr>
+                                                    <td><c:out value="${subject.subjectName}" /></td>
+                                                    <td><c:out value="${subject.subjectCd}" /></td>
+                                                    <td><c:out value="${i}" /></td>
+                                                    <td>
+                                                        <input type="hidden" name="subjectCd" value="${subject.subjectCd}">
+                                                        <input type="hidden" name="no" value="${i}">
+                                                        <input type="number" name="point" value="${currentPoint}" class="form-control" style="width: 80px;" min="0" max="100">
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:forEach>
+                                    </c:when>
+                                    
+                                    <%-- 科目情報検索の場合：今まで通り成績リストを基準にループ --%>
+                                    <c:otherwise>
+                                        <c:forEach var="test" items="${testList}">
+                                            <tr>
+                                                <td><c:out value="${test.studentNo}" /></td>
+                                                <td><c:out value="${test.studentName}" /></td>
+                                                <td><c:out value="${test.point}" /></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>
                             </tbody>
+
                         </table>
+
+                        <c:if test="${param.f == 'st'}">
+                            <div class="text-end mt-3">
+                                <button type="submit" class="btn btn-primary">更新</button>
+                            </div>
+                            </form>
+                        </c:if>
                     </c:when>
-                    <%-- 検索結果が空、かつエラーメッセージが無い場合のみ表示 --%>
-                    <c:when test="${empty testList and not empty param.entYear and empty errors}">
-                        <p>学生情報が存在しませんでした</p>
+                    
+                    <%-- 検索結果が空、かつ検索実行が行われた場合に表示 --%>
+                    <c:when test="${empty testList and not empty param.f and empty errors}">
+                        <p>対象の成績情報が存在しませんでした</p>
                     </c:when>
                 </c:choose>
             </div>

@@ -40,11 +40,6 @@
                         </c:forEach>
                     </tbody>
                 </table>
-
-                <div class="mt-3">
-                    <button class="btn btn-primary" type="submit">登録して終了</button>
-                    <a href="ScoreListAction" class="btn btn-secondary">キャンセル</a>
-                </div>
             </form>
         </section>
     </c:param>

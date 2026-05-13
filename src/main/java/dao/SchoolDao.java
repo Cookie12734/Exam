@@ -8,14 +8,7 @@ import java.sql.SQLException;
 import bean.School;
 
 public class SchoolDao extends Dao{
-	/**
-	 * getメソッド 学校コードを指定して学校インスタンスを１件取得する
-	 *
-	 * @param cd:String
-	 *            学校コード
-	 * @return 学校クラスのインスタンス 存在しない場合はnull
-	 * @throws Exception
-	 */
+
 	public School get(String cd) throws Exception {
 		// 学校インスタンスを初期化
 		School school = new School();

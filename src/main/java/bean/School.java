@@ -1,17 +1,10 @@
 package bean;
 
-/**
- * 学校情報を表す Bean クラスa
- */
 public class School {
 
-	/** 学校コード */
     private String schoolCd;
 
-    /** 学校名 */
     private String schoolName;
-
-    // --- getter / setter ---
 
 	public String getSchoolCd() {
 		return schoolCd;
