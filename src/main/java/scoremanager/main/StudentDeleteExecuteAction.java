@@ -20,6 +20,7 @@ public class StudentDeleteExecuteAction extends Action {
         student.setStudentNo(no);
         sDao.delete(student);
         
-        req.getRequestDispatcher("StudentList.action").forward(req, res);
+        // 完了画面へフォワード
+        req.getRequestDispatcher("/scoremanager/student_delete_done.jsp").forward(req, res);
     }
 }
