@@ -14,7 +14,6 @@
                 <div class="col-auto pb-1">
                     <span class="fw-bold me-2">科目情報</span>
                 </div>
-                <!-- 中略（変更なし） -->
                 <div class="col-auto">
                     <label for="entYear" class="form-label">入学年度</label>
                     <select name="entYear" id="entYear" class="form-select">
@@ -105,6 +104,9 @@
                         <%-- 更新フォーム（学生・科目検索どちらもフォームを使用） --%>
                         <form action="ScoreUpdateExecute.action" method="post">
                         
+                        <%-- 検索種別を更新アクションにも引き継ぐ --%>
+                        <input type="hidden" name="f" value="${param.f}">
+
                         <c:if test="${param.f == 'st'}">
                             <input type="hidden" name="studentNo" value="${testList[0].studentNo}">
                         </c:if>
