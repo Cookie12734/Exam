@@ -7,6 +7,15 @@
         <section class="me-4">
             <h2 class="h3 mb-3 fw-norma">学生情報登録</h2>
             
+            <%-- エラーメッセージの表示エリア --%>
+            <c:if test="${not empty errors}">
+                <div class="alert alert-danger" role="alert">
+                    <c:forEach var="error" items="${errors}">
+                        ${error.value}<br>
+                    </c:forEach>
+                </div>
+            </c:if>
+            
             <form action="StudentCreateExecute.action" method="post">
                 <div class="mb-3">
                     <label class="form-label" for="student-ent-year-input">入学年度</label>
