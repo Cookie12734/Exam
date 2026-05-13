@@ -36,7 +36,7 @@ public class StudentUpdateExecuteAction extends Action {
 		StudentDao sDao = new StudentDao();
 		sDao.save(student); 
 
-		//  完了したら一覧画面へ「リダイレクト」する
-		res.sendRedirect("StudentList.action");
+		//  完了したら完了画面へ
+		res.sendRedirect("../student_update_done.jsp");
 	}
 }

@@ -80,7 +80,7 @@ public class ScoreSaveAction extends Action {
         } else {
             // 保存失敗：エラー画面などへ
             req.setAttribute("errors", "成績の保存に失敗しました");
-            req.getRequestDispatcher("error.jsp").forward(req, res);
+            req.getRequestDispatcher("/scoremanager/error.jsp").forward(req, res);
         }
     }
 }

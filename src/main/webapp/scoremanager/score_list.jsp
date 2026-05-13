@@ -14,6 +14,7 @@
                 <div class="col-auto pb-1">
                     <span class="fw-bold me-2">科目情報</span>
                 </div>
+                <!-- 中略（変更なし） -->
                 <div class="col-auto">
                     <label for="entYear" class="form-label">入学年度</label>
                     <select name="entYear" id="entYear" class="form-select">
@@ -101,10 +102,16 @@
                             </div>
                         </c:if>
 
-                        <%-- 学生検索時は一括更新用のフォームで囲む --%>
+                        <%-- 更新フォーム（学生・科目検索どちらもフォームを使用） --%>
+                        <form action="ScoreUpdateExecute.action" method="post">
+                        
                         <c:if test="${param.f == 'st'}">
-                            <form action="ScoreUpdateExecute.action" method="post">
                             <input type="hidden" name="studentNo" value="${testList[0].studentNo}">
+                        </c:if>
+                        <c:if test="${param.f == 'sj'}">
+                            <%-- 科目検索時は、検索条件の科目をそのまま送信できるようにする --%>
+                            <input type="hidden" name="subjectCd" value="${param.subjectCd}">
+                            <input type="hidden" name="no" value="${param.num}">
                         </c:if>
 
                         <table class="table table-hover table-bordered">
@@ -129,13 +136,12 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                              <tbody>
+                            <tbody>
                                 <c:choose>
-                                    <%-- 学生情報検索の場合：全ての科目と回数を基準にループ --%>
+                                    <%-- 学生情報検索の場合 --%>
                                     <c:when test="${param.f == 'st'}">
                                         <c:forEach var="subject" items="${subjectList}">
                                             <c:forEach var="i" begin="1" end="2">
-                                                <%-- 現在の科目・回数に該当する点数があるか探す --%>
                                                 <c:set var="currentPoint" value="" />
                                                 <c:forEach var="test" items="${testList}">
                                                     <c:if test="${test.subjectCd == subject.subjectCd && test.no == i}">
@@ -158,13 +164,18 @@
                                         </c:forEach>
                                     </c:when>
                                     
-                                    <%-- 科目情報検索の場合：今まで通り成績リストを基準にループ --%>
+                                    <%-- 科目情報検索の場合 --%>
                                     <c:otherwise>
                                         <c:forEach var="test" items="${testList}">
                                             <tr>
-                                                <td><c:out value="${test.studentNo}" /></td>
+                                                <td>
+                                                    <c:out value="${test.studentNo}" />
+                                                    <input type="hidden" name="studentNo" value="${test.studentNo}">
+                                                </td>
                                                 <td><c:out value="${test.studentName}" /></td>
-                                                <td><c:out value="${test.point}" /></td>
+                                                <td>
+                                                    <input type="number" name="point" value="${test.point}" class="form-control" style="width: 80px;" min="0" max="100">
+                                                </td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -172,15 +183,12 @@
                                     </c:otherwise>
                                 </c:choose>
                             </tbody>
-
                         </table>
 
-                        <c:if test="${param.f == 'st'}">
-                            <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-primary">更新</button>
-                            </div>
-                            </form>
-                        </c:if>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary">更新</button>
+                        </div>
+                        </form>
                     </c:when>
                     
                     <%-- 検索結果が空、かつ検索実行が行われた場合に表示 --%>

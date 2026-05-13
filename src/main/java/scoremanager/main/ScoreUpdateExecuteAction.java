@@ -33,8 +33,12 @@ public class ScoreUpdateExecuteAction extends Action {
             for (String p : points) {
                 if (p == null || p.trim().isEmpty()) continue;
                 try {
-                    int val = Integer.parseInt(p.trim());
-                    if (val < 0 || val > 100) {
+                    // 小数点付きの入力も許容するため、一度 Double でパースする
+                    double dVal = Double.parseDouble(p.trim());
+                    int val = (int) dVal;
+                    
+                    // 0〜100の範囲チェックと、小数点以下が0以外の値（例:100.5）ではないかのチェック
+                    if (val < 0 || val > 100 || dVal != val) {
                         hasError = true;
                         break;
                     }
@@ -69,7 +73,7 @@ public class ScoreUpdateExecuteAction extends Action {
                 score.setSchoolCd(schoolCd);
                 score.setSubjectCd(subCd);
                 score.setNo(Integer.parseInt(noVal));
-                score.setPoint(Integer.parseInt(p));
+                score.setPoint((int) Double.parseDouble(p)); // Double経由でintに変換
                 score.setClassNum(classNum);
 
                 sDao.save(score);
