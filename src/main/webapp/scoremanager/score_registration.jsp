@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">検索</button>
+                        <button type="submit" class="btn btn-secondary">検索</button>
                     </div>
                 </div>
             </form>
